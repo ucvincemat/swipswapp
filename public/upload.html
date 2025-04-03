@@ -3,35 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Swap Offer</title>
+    <title>SwipSwap</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Create a Swap Offer</h1>
-    <form id="offerForm" enctype="multipart/form-data">
-        <input type="text" id="title" placeholder="Title" required>
-        <input type="text" id="description" placeholder="Description" required>
-        <input type="file" id="image" accept="image/*" required>
-        <input type="text" id="user" placeholder="Username" required>
-        <button type="submit">Submit</button>
-    </form>
-    <button onclick="location.href='index.html'">Back to Offers</button>
+    <div class="container">
+        <h1>Create a Swap Offer</h1>
+        <form id="offerForm" enctype="multipart/form-data">
+            <div id="dropArea" class="drop-area">
+                <p>Drop images here</p>
+                <input type="file" id="image" accept="image/*" multiple hidden>
+            </div>
+            <input type="text" id="title" placeholder="Title" required>
+            <input type="text" id="description" placeholder="Description" required>
+            <input type="text" id="user" placeholder="Username" required>
+            <div id="imagePreview" class="preview"></div>
 
-    <script>
-        document.getElementById("offerForm").addEventListener("submit", (e) => {
-            e.preventDefault();
-            const formData = new FormData();
-            formData.append("title", document.getElementById("title").value);
-            formData.append("description", document.getElementById("description").value);
-            formData.append("image", document.getElementById("image").files[0]);
-            formData.append("user", document.getElementById("user").value);
+            <button type="submit">Submit</button>
+        </form>
+        <button onclick="location.href='index.html'">Back to Offers</button>
+    </div>
 
-            fetch("/api/offers", {
-                method: "POST",
-                body: formData,
-            }).then(() => {
-                window.location.href = "index.html"; // Redirect after submission
-            });
-        });
-    </script>
+    <script src="upload.js"></script>
 </body>
 </html>

@@ -1,12 +1,275 @@
+@font-face {
+    font-family: Oswald;
+    src: url(assets/oswald.woff);
+}
+
+@font-face {
+    font-family: OswaldLight;
+    src: url(assets/oswald-light.woff);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #f4f4f4;
+    margin-top: 100px;
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 400px;
+}
+
+input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.drop-area {
+    border: 2px dashed #999;
+    padding: 20px;
+    margin: 10px 0;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.drop-area.active {
+    border-color: #007bff;
+    background-color: #e9f5ff;
+}
+
+.preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.preview-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    background: #060325;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+    color: #fff;
+}
+
+.logo {
+    font-family: Oswald, 'Courier New', Courier, monospace;
+    font-size: 2.2em;
+    user-select: none;
+    margin-left: 75px;
+    display: flex;
+    align-items: center;
+}
+
+.logo p {
+    font-family: OswaldLight, 'Courier New', Courier, monospace;
+    font-size: 0.5em;
+    font-weight: 100;
+    letter-spacing: 0.1cm;
+    margin-left: 1.5cm;    
+    margin-top: 15px;
+}
+
+.logo img {
+    position: absolute;
+    top: 7px;
+    left: 75px;
+}
+
+.btnPopup {
+    width: 130px;
+    height: 50px;
+    background: transparent;
+    border: 2px solid #fff;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #fff;
+    font-weight: 500;
+    margin-left: 40px;
+    transition: .5s;
+}
+
+.btnPopup:hover {
+    background: #fff;
+    color: #060325;
+}
+
+#offers {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+    gap: 20px;
+    width: 90%;
+    margin-top: 20px;
     padding: 20px;
 }
-#offers {
-    margin-top: 20px;
-}
+
+/* Style for individual offer */
 .offer {
-    border: 1px solid #ccc;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 10px;
+    text-align: center;
+}
+
+/* Style for thumbnail image */
+.thumbnail {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* Ensures image doesn't distort */
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+/* Title style */
+h3 {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* Modal styles */
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+.modal-content {
+    display: flex;
+    max-width: 90%;
+    max-height: 80%;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.modal-images {
+    width: 50%;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border-right: 2px solid #ddd;
+    padding: 20px;
+}
+
+.modal-images img {
+    width: 100%; 
+    height: 100%;
+    max-height: 860px;
+    object-fit: contain; 
+    margin: 10px 0;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.modal-images img:hover {
+    transform: scale(1.05);
+}
+
+.modal-details {
+    width: 50%;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.modal-details h2 {
+    font-size: 24px;
     margin-bottom: 10px;
+}
+
+.modal-details p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.modal-details .user-info {
+    font-style: italic;
+    color: #555;
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .modal-content {
+        flex-direction: column;
+        max-width: 100%;
+    }
+
+    .modal-images {
+        width: 100%;
+        margin-bottom: 20px;
+        border-right: none;
+    }
+
+    .modal-details {
+        width: 100%;
+    }
+
+    .modal-images img {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-images img {
+        width: 100%;
+        height: auto;
+    }
 }
