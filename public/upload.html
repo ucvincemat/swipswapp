@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <header>
+        <h2 class="logo"><a href="index.html"><img src="assets/logo.webp" width="90px"> SwipSwap</a> <p>YOUR TRASH IS MY TREASURE! &trade;</p></h2>
+        <nav class="navigation">
+            <button class="btnPopup">Login</button>
+        </nav>
+    </header>
     <div class="container">
         <h1>Create a Swap Offer</h1>
         <form id="offerForm" enctype="multipart/form-data">
@@ -14,14 +20,13 @@
                 <p>Drop images here</p>
                 <input type="file" id="image" accept="image/*" multiple hidden>
             </div>
-            <input type="text" id="title" placeholder="Title" required>
-            <input type="text" id="description" placeholder="Description" required>
+            <input type="text" autocomplete="off" id="title" placeholder="Title" required>
+            <input type="text" autocomplete="off" id="description" placeholder="Description" required>
             <input type="text" id="user" placeholder="Username" required>
             <div id="imagePreview" class="preview"></div>
 
             <button type="submit">Submit</button>
         </form>
-        <button onclick="location.href='index.html'">Back to Offers</button>
     </div>
 
     <script src="upload.js"></script>

@@ -23,7 +23,7 @@ body {
     align-items: center;
     justify-content: flex-start;
     background-color: #f4f4f4;
-    margin-top: 100px;
+    margin-top: 150px;
 }
 
 .container {
@@ -85,10 +85,15 @@ header {
     color: #fff;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .logo {
     font-family: Oswald, 'Courier New', Courier, monospace;
     font-size: 2.2em;
-    user-select: none;
+    user-select: pointer;
     margin-left: 75px;
     display: flex;
     align-items: center;
@@ -96,6 +101,7 @@ header {
 
 .logo p {
     font-family: OswaldLight, 'Courier New', Courier, monospace;
+    user-select: none;
     font-size: 0.5em;
     font-weight: 100;
     letter-spacing: 0.1cm;
@@ -134,7 +140,6 @@ header {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
     gap: 20px;
     width: 90%;
-    margin-top: 20px;
     padding: 20px;
 }
 
