@@ -23,12 +23,20 @@ fileInput.addEventListener("change", () => handleFiles(fileInput.files));
 
 function handleFiles(files) {
     imagePreview.innerHTML = "";
+    const dataTransfer = new DataTransfer(); // Create a DataTransfer object to update fileInput
+
     [...files].forEach((file) => {
         const img = document.createElement("img");
         img.src = URL.createObjectURL(file);
         img.classList.add("preview-img");
         imagePreview.appendChild(img);
+
+        // Add the file to the DataTransfer object
+        dataTransfer.items.add(file);
     });
+
+    // Update the fileInput element with the new files
+    fileInput.files = dataTransfer.files;
 }
 
 document.getElementById("offerForm").addEventListener("submit", (e) => {
@@ -36,7 +44,6 @@ document.getElementById("offerForm").addEventListener("submit", (e) => {
     const formData = new FormData();
     formData.append("title", document.getElementById("title").value);
     formData.append("description", document.getElementById("description").value);
-    formData.append("user", document.getElementById("user").value);
     [...fileInput.files].forEach((file) => {
         formData.append("images", file);
     });
@@ -44,7 +51,13 @@ document.getElementById("offerForm").addEventListener("submit", (e) => {
     fetch("/api/offers", {
         method: "POST",
         body: formData,
-    }).then(() => {
-        window.location.href = "index.html";
+    }).then((res) => {
+        if (res.ok) {
+            window.location.href = "index.html";
+        } else {
+            res.json().then((data) => {
+                alert(data.error || "Failed to create offer. Please try again.");
+            });
+        }
     });
 });

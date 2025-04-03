@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h2 class="logo"><a href="index.html"><img src="assets/logo.webp" width="90px"> SwipSwap</a> <p>YOUR TRASH IS MY TREASURE! &trade;</p></h2>
+        <nav class="navigation">
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <input type="text" id="loginUsername" placeholder="Username" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account yet? <a href="register.html">Register here</a>.</p>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const username = document.getElementById("loginUsername").value;
+            const password = document.getElementById("loginPassword").value;
+
+            fetch("/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password }),
+            }).then((res) => res.json()).then((data) => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    window.location.href = "index.html";
+                }
+            });
+        });
+
+        fetch("/api/session").then((res) => res.json()).then((data) => {
+            if (data.loggedIn) {
+                window.location.href = "index.html";
+            }
+        });
+    </script>
+</body>
+</html>

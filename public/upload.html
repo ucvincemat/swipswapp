@@ -10,8 +10,27 @@
     <header>
         <h2 class="logo"><a href="index.html"><img src="assets/logo.webp" width="90px"> SwipSwap</a> <p>YOUR TRASH IS MY TREASURE! &trade;</p></h2>
         <nav class="navigation">
-            <button class="btnPopup">Login</button>
+            <button class="btnPopup" id="authButton">Login</button>
         </nav>
+        
+        <script>
+            fetch("/api/session").then((res) => res.json()).then((data) => {
+                const authButton = document.getElementById("authButton");
+                if (data.loggedIn) {
+                    authButton.textContent = "Logout";
+                    authButton.addEventListener("click", () => {
+                        fetch("/api/logout", { method: "POST" }).then(() => {
+                            window.location.reload();
+                        });
+                    });
+                } else {
+                    authButton.textContent = "Login";
+                    authButton.addEventListener("click", () => {
+                        window.location.href = "login.html";
+                    });
+                }
+            });
+        </script>
     </header>
     <div class="container">
         <h1>Create a Swap Offer</h1>
@@ -22,12 +41,19 @@
             </div>
             <input type="text" autocomplete="off" id="title" placeholder="Title" required>
             <input type="text" autocomplete="off" id="description" placeholder="Description" required>
-            <input type="text" id="user" placeholder="Username" required>
             <div id="imagePreview" class="preview"></div>
 
             <button type="submit">Submit</button>
         </form>
     </div>
+
+    <script>
+        fetch("/api/session").then((res) => res.json()).then((data) => {
+            if (!data.loggedIn) {
+                window.location.href = "login.html";
+            }
+        });
+    </script>
 
     <script src="upload.js"></script>
 </body>
