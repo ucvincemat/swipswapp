@@ -10,5 +10,6 @@ CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    isAdmin INTEGER DEFAULT 0 -- 0 for regular users, 1 for admins
+    isAdmin INTEGER DEFAULT 0, -- 0 for regular users, 1 for admins
+    karma INTEGER DEFAULT 1200
 );

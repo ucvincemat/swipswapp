@@ -1,0 +1,213 @@
+@font-face {
+    font-family: Oswald;
+    src: url(assets/oswald.woff);
+}
+
+@font-face {
+    font-family: OswaldLight;
+    src: url(assets/oswald-light.woff);
+}
+
+/* General styles for the admin panel */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    margin-top: 100px;
+}
+
+/* Admin panel container */
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+/* Header styles */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    background: #060325;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+    color: #fff;
+}
+
+.navigation {
+    display: flex;
+    gap: 20px;
+}
+
+.navigation .btnPopup {
+    width: auto;
+    padding: 10px 20px;
+    background: transparent;
+    border: 2px solid #fff;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #fff;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.navigation .btnPopup:hover {
+    background: #fff;
+    color: #060325;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo {
+    font-family: Oswald, 'Courier New', Courier, monospace;
+    font-size: 2.2em;
+    user-select: pointer;
+    margin-left: 75px;
+    display: flex;
+    align-items: center;
+}
+
+.logo p {
+    font-family: OswaldLight, 'Courier New', Courier, monospace;
+    user-select: none;
+    font-size: 0.5em;
+    font-weight: 100;
+    letter-spacing: 0.1cm;
+    margin-left: 1.5cm;    
+    margin-top: 15px;
+}
+
+.logo img {
+    position: absolute;
+    top: 7px;
+    left: 75px;
+}
+
+header h2 {
+    font-size: 24px;
+    margin: 0;
+}
+
+header a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+header a:hover {
+    text-decoration: underline;
+}
+
+/* Table styles */
+#usersTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 16px;
+    text-align: left;
+}
+
+#usersTable th, #usersTable td {
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+
+#usersTable th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#usersTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#usersTable tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Button styles */
+#usersTable button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Increase Karma Button */
+#usersTable .increase {
+    background-color: #4caf50; /* Green */
+    color: white;
+}
+
+#usersTable .increase:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Decrease Karma Button */
+#usersTable .decrease {
+    background-color: #ff9800; /* Orange */
+    color: white;
+}
+
+#usersTable .decrease:hover {
+    background-color: #e68900; /* Darker orange on hover */
+}
+
+/* Ban Button */
+#usersTable .ban {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
+#usersTable .ban:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+}
+
+/* Add spacing between buttons */
+#usersTable td button {
+    margin-right: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    #usersTable {
+        font-size: 14px;
+    }
+
+    #usersTable th, #usersTable td {
+        padding: 10px;
+    }
+
+    #usersTable button {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+}

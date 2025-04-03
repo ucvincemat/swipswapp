@@ -23,15 +23,24 @@
                 const tagline = document.getElementById("tagline");
 
                 if (data.loggedIn) {
-                    // Update tagline if the user is an admin
                     if (data.isAdmin) {
-                        tagline.textContent = "TREASURE ADMINISTRATOR";
+                        tagline.innerHTML = "TREASURE ADMINISTRATOR&trade;";
+                        const adminLink = document.createElement("button");
+                        adminLink.classList.add("btnPopup");
+                        adminLink.textContent = "Admin Panel";
+                        adminLink.onclick = () => window.location.href = "admin.html";
+                        document.querySelector(".navigation").prepend(adminLink);
                     }
+
+                    const karmaColor = data.karma > 1000 ? "green" : data.karma < -1000 ? "red" : "orange";
 
                     authButton.outerHTML = `
                         <div class="dropdown">
                             <button class="btnPopup">Account</button>
                             <div class="dropdown-content">
+                                <button style="cursor: default;" disabled>
+                                    Karma: <k style="color: ${karmaColor}">${data.karma}</k>
+                                </button>
                                 <button id="deleteAccount">Delete Account</button>
                                 <button id="logout">Logout</button>
                             </div>

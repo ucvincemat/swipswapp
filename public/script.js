@@ -47,8 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const modal = document.createElement("div");
         modal.classList.add("modal");
 
-        // Check if the current user is the owner of the offer or an admin
-        const isOwner = currentUserId && offer.user === currentUserId;
+        // Determine karma color
+        const karmaColor = offer.karma > 1000 ? "green" : offer.karma < -1000 ? "red" : "orange";
 
         modal.innerHTML = `
             <div class="modal-content">
@@ -59,16 +59,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="modal-details">
                     <h2>${offer.title}</h2>
                     <p>${offer.description}</p>
-                    <p class="user-info">Posted by: ${offer.user}</p>
-                    ${(isOwner || isAdmin) ? `<button id="deleteOffer">Delete Offer</button>` : ""}
+                    <p class="user-info">
+                        Posted by: ${offer.user} 
+                        <span style="color: ${karmaColor}; font-weight: bold;">(${offer.karma})</span>
+                    </p>
+                    ${(offer.isOwner || isAdmin) ? `<button id="deleteOffer">Delete Offer</button>` : ""}
                 </div>
             </div>
         `;
 
         document.body.appendChild(modal);
 
-        // Add event listener for the delete button if the user is the owner or an admin
-        if (isOwner || isAdmin) {
+        if (offer.isOwner || isAdmin) {
             document.getElementById("deleteOffer").addEventListener("click", () => {
                 fetch(`/api/offers/${offer.id}`, { method: "DELETE" }).then(() => {
                     document.body.removeChild(modal);
@@ -77,12 +79,10 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Add event listener to close the modal
         modal.querySelector(".close").addEventListener("click", () => {
             document.body.removeChild(modal);
         });
 
-        // Close the modal if clicked outside of the modal content
         modal.addEventListener("click", (e) => {
             if (e.target === modal) {
                 document.body.removeChild(modal);

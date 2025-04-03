@@ -51,7 +51,7 @@ app.post("/api/register", (req, res) => {
         return res.status(400).json({ error: "Username and password are required" });
     }
 
-    db.run("INSERT INTO users (username, password) VALUES (?, ?)", [username, password], function (err) {
+    db.run("INSERT INTO users (username, password, karma) VALUES (?, ?, 1200)", [username, password], function (err) {
         if (err) {
             return res.status(500).json({ error: "Username already exists" });
         }
@@ -87,10 +87,13 @@ function isAuthenticated(req, res, next) {
 }
 
 app.get("/api/offers", (req, res) => {
-    db.all("SELECT * FROM swap_offers", (err, rows) => {
+    db.all(`
+        SELECT o.*, u.karma 
+        FROM swap_offers o 
+        JOIN users u ON o.user = u.username
+    `, (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
 
-        // Fetch the logged-in user's username
         const loggedInUsername = req.session.userId
             ? db.get("SELECT username FROM users WHERE id = ?", [req.session.userId], (err, user) => {
                   return user ? user.username : null;
@@ -100,7 +103,7 @@ app.get("/api/offers", (req, res) => {
         res.json(
             rows.map((offer) => ({
                 ...offer,
-                isOwner: loggedInUsername === offer.user, // Compare username instead of user ID
+                isOwner: loggedInUsername === offer.user,
             }))
         );
     });
@@ -206,17 +209,67 @@ app.delete("/api/delete-account", isAuthenticated, (req, res) => {
     });
 });
 
+app.delete("/api/users/:id", isAuthenticated, (req, res) => {
+    const userId = req.params.id;
+
+    db.get("SELECT isAdmin FROM users WHERE id = ?", [req.session.userId], (err, user) => {
+        if (err || !user || !user.isAdmin) {
+            return res.status(403).json({ error: "Unauthorized" });
+        }
+
+        db.run("DELETE FROM users WHERE id = ?", [userId], function (err) {
+            if (err || this.changes === 0) {
+                return res.status(500).json({ error: "Failed to delete user" });
+            }
+            res.json({ message: "User deleted successfully" });
+        });
+    });
+});
+
 app.get("/api/session", (req, res) => {
     if (req.session.userId) {
-        db.get("SELECT username, isAdmin FROM users WHERE id = ?", [req.session.userId], (err, user) => {
+        db.get("SELECT username, isAdmin, karma FROM users WHERE id = ?", [req.session.userId], (err, user) => {
             if (err || !user) {
                 return res.json({ loggedIn: false });
             }
-            res.json({ loggedIn: true, username: user.username, isAdmin: user.isAdmin });
+            res.json({ loggedIn: true, username: user.username, isAdmin: user.isAdmin, karma: user.karma });
         });
     } else {
         res.json({ loggedIn: false });
     }
+});
+
+app.get("/api/users", isAuthenticated, (req, res) => {
+    db.get("SELECT isAdmin FROM users WHERE id = ?", [req.session.userId], (err, user) => {
+        if (err || !user || !user.isAdmin) {
+            return res.status(403).json({ error: "Unauthorized" });
+        }
+
+        db.all("SELECT id, username, karma, isAdmin FROM users", (err, users) => {
+            if (err) {
+                return res.status(500).json({ error: "Failed to fetch users" });
+            }
+            res.json(users);
+        });
+    });
+});
+
+app.post("/api/users/:id/karma", isAuthenticated, (req, res) => {
+    const { amount } = req.body;
+    const userId = req.params.id;
+
+    db.get("SELECT isAdmin FROM users WHERE id = ?", [req.session.userId], (err, user) => {
+        if (err || !user || !user.isAdmin) {
+            return res.status(403).json({ error: "Unauthorized" });
+        }
+
+        db.run("UPDATE users SET karma = karma + ? WHERE id = ?", [amount, userId], function (err) {
+            if (err || this.changes === 0) {
+                return res.status(500).json({ error: "Failed to update karma" });
+            }
+            res.json({ message: "Karma updated successfully" });
+        });
+    });
 });
 
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));
