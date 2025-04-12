@@ -192,6 +192,30 @@ header a:hover {
     margin-right: 10px;
 }
 
+/* Karma value styling */
+.karma-value {
+    font-weight: bold;
+    text-shadow: 1px 2px 1px rgba(0, 0, 0, 0.1); /* Add an outline effect */
+    transition: transform 0.2s ease, color 0.2s ease; /* Smooth transition for color and animation */
+}
+
+/* Pop animation for karma changes */
+@keyframes pop {
+    0% {
+        transform: scale(1) translateX(0);
+    }
+    50% {
+        transform: scale(1.6) translateX(2.2em);
+    }
+    100% {
+        transform: scale(1) translateX(0);
+    }
+}
+
+.pop-animation {
+    animation: pop 0.3s ease-in-out;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .container {

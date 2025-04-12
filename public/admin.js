@@ -20,9 +20,11 @@ function fetchUsers() {
 
             users.forEach((user) => {
                 const row = document.createElement("tr");
+                row.setAttribute("data-id", user.id); // Add data-id for easy targeting
+
                 row.innerHTML = `
                     <td>${user.username}</td>
-                    <td>${user.karma}</td>
+                    <td class="karma-value" style="color: ${getKarmaColor(user.karma)}">${user.karma}</td>
                     <td>
                         <button class="increase" data-id="${user.id}">+100 Karma</button>
                         <button class="decrease" data-id="${user.id}">-100 Karma</button>
@@ -59,11 +61,60 @@ function updateKarma(userId, amount) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount }),
-    }).then(() => fetchUsers());
+    })
+        .then(() => fetch("/api/users")) // Fetch updated user data
+        .then((res) => res.json())
+        .then((users) => {
+            const user = users.find((u) => u.id == userId); // Find the updated user
+            const row = document.querySelector(`[data-id="${userId}"]`).closest("tr");
+            const karmaCell = row.querySelector(".karma-value");
+
+            // Update the karma value and color
+            karmaCell.textContent = user.karma;
+            karmaCell.style.color = getKarmaColor(user.karma);
+
+            // Add the pop animation
+            karmaCell.classList.add("pop-animation");
+            setTimeout(() => karmaCell.classList.remove("pop-animation"), 300); // Remove animation after 300ms
+        })
+        .catch((error) => {
+            console.error("Failed to update karma:", error);
+        });
 }
 
 function banUser(userId) {
     fetch(`/api/users/${userId}`, { method: "DELETE" }).then(() => fetchUsers());
+}
+
+function getKarmaColor(karma) {
+    if (karma >= 3000) return "rgb(3, 192, 255)"; // Max positive karma
+    if (karma <= -3000) return "darkred"; // Max negative karma
+
+    const interpolateColor = (start, end, factor) => {
+        // Apply an easing function to the factor for smoother transitions
+        const easedFactor = factor * factor * (3 - 2 * factor); // Smoothstep easing
+
+        const startRGB = start.match(/\d+/g).map(Number);
+        const endRGB = end.match(/\d+/g).map(Number);
+        const resultRGB = startRGB.map((startVal, i) =>
+            Math.round(startVal + (endRGB[i] - startVal) * easedFactor)
+        );
+        return `rgb(${resultRGB.join(",")})`;
+    };
+
+    if (karma >= 1000) {
+        const factor = (karma - 1000) / 2000;
+        return interpolateColor("rgb(0,175,0)", "rgb(3,197,250)", factor); // Green to Light Blue
+    } else if (karma >= 0) {
+        const factor = karma / 1000;
+        return interpolateColor("rgb(255,165,0)", "rgb(0,175,0)", factor); // Orange to Green
+    } else if (karma >= -1000) {
+        const factor = -karma / 1000;
+        return interpolateColor("rgb(255,165,0)", "rgb(255,0,0)", factor); // Orange to Red
+    } else {
+        const factor = (-karma - 1000) / 2000;
+        return interpolateColor("rgb(255,0,0)", "rgb(63,7,7)", factor); // Red to Dark Red
+    }
 }
 
 fetchUsers();

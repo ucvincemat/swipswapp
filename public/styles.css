@@ -35,15 +35,14 @@ body {
     width: 400px;
 }
 
-/* Restore default link styles for login and register pages */
 .container a {
     text-decoration: underline;
-    color: blue; /* Default link color */
+    color: blue;
     cursor: pointer;
 }
 
 .container a:hover {
-    color: darkblue; /* Optional: Change color on hover */
+    color: darkblue;
 }
 
 input, button {
@@ -163,8 +162,8 @@ a {
     font-weight: 500;
     margin-left: 40px;
     transition: .5s;
-    display: inline-block; /* Ensure proper alignment */
-    margin: 0; /* Remove any extra margin */
+    display: inline-block;
+    margin: 0;
 }
 
 .btnPopup:hover {
@@ -174,38 +173,64 @@ a {
 
 #offers {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
     width: 90%;
     padding: 20px;
 }
 
-/* Style for individual offer */
 .offer {
     background-color: white;
-    border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 10px;
     text-align: center;
+    border-radius: 3px;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer; /* Add this line */
 }
 
-/* Style for thumbnail image */
+.offer:hover {
+    transform: scale(1.05); /* Slightly grow the offer card */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Add a stronger shadow on hover */
+}
+
+.offer .poster-info {
+    position: absolute;
+    bottom: -50px; /* Initially hidden below the card */
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 0 0 8px 8px; /* Match the card's border radius */
+    transform: translateY(0);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0; /* Initially invisible */
+}
+
+.offer:hover .poster-info {
+    transform: translateY(-50px); /* Slide up into view */
+    opacity: 1; /* Make it visible */
+}
+
 .thumbnail {
     width: 100%;
     height: 200px;
-    object-fit: cover; /* Ensures image doesn't distort */
+    object-fit: cover;
     cursor: pointer;
     border-radius: 8px;
 }
 
-/* Title style */
 h3 {
     font-size: 18px;
     margin: 10px 0;
 }
 
-/* Modal styles */
 .modal {
     display: flex;
     justify-content: center;
@@ -229,6 +254,7 @@ h3 {
     position: relative;
     min-height: 378px;
     min-width: 720px;
+    padding-bottom: 80px; /* Add padding to make space for the footer */
 }
 
 .modal-images {
@@ -251,10 +277,7 @@ h3 {
     margin: 10px 0;
     border-radius: 8px;
     transition: transform 0.3s ease;
-}
-
-.modal-images img:hover {
-    transform: scale(1.05);
+    cursor: zoom-in;
 }
 
 .modal-details {
@@ -279,7 +302,6 @@ h3 {
     color: #555;
 }
 
-/* Close button */
 .close {
     position: absolute;
     top: 10px;
@@ -289,24 +311,105 @@ h3 {
     cursor: pointer;
 }
 
-/* Dropdown styles */
+/* Modal footer styles */
+.modal-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f9f9f9;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    gap: 10px;
+}
+
+/* Swap button styling */
+.swap-button {
+    background-color: #007bff; /* Blue background */
+    color: white;
+    font-size: 24px; /* Large text */
+    font-weight: bold;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    flex: 3; /* Takes up 75% of the width */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Space between icon and text */
+}
+
+/* Hover effect for the Swap button */
+.swap-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.02); /* Slightly enlarge the button */
+}
+
+/* Report button styling */
+.report-button {
+    background-color: #f44336; /* Red background */
+    color: white;
+    font-size: 20px; /* Slightly smaller text */
+    font-weight: bold;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    flex: 1; /* Takes up 25% of the width */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Space between icon and text */
+}
+
+/* Hover effect for the Report button */
+.report-button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+    transform: scale(1.02); /* Slightly enlarge the button */
+}
+
+/* Icon styles */
+.icon-loop, .icon-warning {
+    display: inline-block;
+    width: 24px; /* Increase the size */
+    height: 24px; /* Increase the size */
+    background-size: contain;
+    filter: invert(1); /* Make the icons white */
+}
+
+/* Loop icon */
+.icon-loop {
+    background: url('assets/loop-icon.svg') no-repeat center center;
+}
+
+/* Warning icon */
+.icon-warning {
+    background: url('assets/warning-icon.svg') no-repeat center center;
+}
+
 .dropdown {
     position: relative;
     display: inline-block;
 }
 
 .dropdown-content {
-    display: block; /* Always keep it in the DOM */
-    opacity: 0; /* Start hidden */
-    visibility: hidden; /* Prevent interaction when hidden */
+    display: block;
+    opacity: 0;
+    visibility: hidden;
     position: absolute;
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
-    top: 100%; /* Align the dropdown directly below the button */
+    top: 100%;
     left: 0;
-    transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth fade-in/out */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .dropdown-content button {
@@ -325,13 +428,135 @@ h3 {
     background-color: #f1f1f1;
 }
 
-/* Show the dropdown with animation */
 .dropdown:hover .dropdown-content {
-    opacity: 1; /* Fully visible */
-    visibility: visible; /* Allow interaction */
+    opacity: 1;
+    visibility: visible;
 }
 
-/* Responsive adjustments */
+.chat-widget {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    width: 300px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.chat-header {
+    background: #4caf50;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+}
+
+.chat-body {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    display: block;
+}
+
+.chat-footer {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.chat-footer textarea {
+    flex: 1;
+    resize: none;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.chat-footer button {
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.chat-footer button:hover {
+    background: #45a049;
+}
+
+.chat-message {
+    margin-bottom: 10px;
+}
+
+.chat-message.sent {
+    text-align: right;
+    color: green;
+}
+
+.chat-message.received {
+    text-align: left;
+    color: blue;
+}
+
+.chat-message .timestamp {
+    display: block;
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 5px;
+}
+
+/* Swap button container */
+.swap-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Swap button styling */
+.swap-button {
+    background-color: #007bff; /* Blue background */
+    color: white;
+    font-size: 24px; /* Large text */
+    font-weight: bold;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Hover effect for the Swap button */
+.swap-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.02); /* Slightly enlarge the button */
+}
+
+/* Zoom container for the preview */
+.zoom-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    border: 2px solid #ddd;
+    background-repeat: no-repeat;
+    background-size: 800%; /* Increase magnification significantly */
+    pointer-events: none; /* Prevent interaction with the preview */
+    display: none; /* Initially hidden */
+    z-index: 10;
+    border-radius: 8px; /* Rounded corners for the preview */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
 @media (max-width: 768px) {
     .modal-content {
         flex-direction: column;

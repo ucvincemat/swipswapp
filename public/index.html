@@ -18,6 +18,41 @@
         </nav>
         
         <script>
+            function getKarmaColor(karma) {
+                if (karma >= 3000) return "rgb(3, 192, 255)"; // Max positive karma
+                if (karma <= -3000) return "darkred"; // Max negative karma
+
+                const interpolateColor = (start, end, factor) => {
+                    // Apply an easing function to the factor for smoother transitions
+                    const easedFactor = factor * factor * (3 - 2 * factor); // Smoothstep easing
+
+                    const startRGB = start.match(/\d+/g).map(Number);
+                    const endRGB = end.match(/\d+/g).map(Number);
+                    const resultRGB = startRGB.map((startVal, i) =>
+                        Math.round(startVal + (endRGB[i] - startVal) * easedFactor)
+                    );
+                    return `rgb(${resultRGB.join(",")})`;
+                };
+
+                if (karma >= 1000) {
+                    // Green to Light Blue
+                    const factor = (karma - 1000) / 2000; // Normalize between 1000 and 3000
+                    return interpolateColor("rgb(0,175,0)", "rgb(3,197,250)", factor); // Green to Light Blue
+                } else if (karma >= 0) {
+                    // Orange to Green
+                    const factor = karma / 1000; // Normalize between 0 and 1000
+                    return interpolateColor("rgb(255,165,0)", "rgb(0,175,0)", factor); // Orange to Green
+                } else if (karma >= -1000) {
+                    // Orange to Red
+                    const factor = -karma / 1000; // Normalize between 0 and -1000
+                    return interpolateColor("rgb(255,165,0)", "rgb(255,0,0)", factor); // Orange to Red
+                } else {
+                    // Red to Dark Red
+                    const factor = (-karma - 1000) / 2000; // Normalize between -1000 and -3000
+                    return interpolateColor("rgb(255,0,0)", "rgb(63,7,7)", factor); // Red to Dark Red
+                }
+            }
+
             fetch("/api/session").then((res) => res.json()).then((data) => {
                 const authButton = document.getElementById("authButton");
                 const tagline = document.getElementById("tagline");
@@ -32,14 +67,15 @@
                         document.querySelector(".navigation").prepend(adminLink);
                     }
 
-                    const karmaColor = data.karma > 1000 ? "green" : data.karma < -1000 ? "red" : "orange";
+                    // Determine karma color using the gradient function
+                    const karmaColor = getKarmaColor(data.karma);
 
                     authButton.outerHTML = `
                         <div class="dropdown">
                             <button class="btnPopup">Account</button>
                             <div class="dropdown-content">
                                 <button style="cursor: default;" disabled>
-                                    Karma: <k style="color: ${karmaColor}">${data.karma}</k>
+                                    <span style="color: ${karmaColor}; font-weight: bold;">${data.karma}</span> Karma
                                 </button>
                                 <button id="deleteAccount">Delete Account</button>
                                 <button id="logout">Logout</button>
