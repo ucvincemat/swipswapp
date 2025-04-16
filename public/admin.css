@@ -8,9 +8,9 @@
     src: url(assets/oswald-light.woff);
 }
 
-/* General styles for the admin panel */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
     margin: 0;
     padding: 0;
     background-color: #f9f9f9;
@@ -22,7 +22,6 @@ body {
     margin-top: 100px;
 }
 
-/* Admin panel container */
 .container {
     background: white;
     padding: 30px;
@@ -34,7 +33,6 @@ body {
     margin: 20px auto;
 }
 
-/* Header styles */
 header {
     position: fixed;
     top: 0;
@@ -118,7 +116,6 @@ header a:hover {
     text-decoration: underline;
 }
 
-/* Table styles */
 #usersTable {
     width: 100%;
     border-collapse: collapse;
@@ -146,7 +143,6 @@ header a:hover {
     background-color: #f1f1f1;
 }
 
-/* Button styles */
 #usersTable button {
     padding: 10px 15px;
     border: none;
@@ -157,49 +153,43 @@ header a:hover {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Increase Karma Button */
 #usersTable .increase {
-    background-color: #4caf50; /* Green */
+    background-color: #4caf50;
     color: white;
 }
 
 #usersTable .increase:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #45a049;
 }
 
-/* Decrease Karma Button */
 #usersTable .decrease {
-    background-color: #ff9800; /* Orange */
+    background-color: #ff9800;
     color: white;
 }
 
 #usersTable .decrease:hover {
-    background-color: #e68900; /* Darker orange on hover */
+    background-color: #e68900;
 }
 
-/* Ban Button */
 #usersTable .ban {
-    background-color: #f44336; /* Red */
+    background-color: #f44336;
     color: white;
 }
 
 #usersTable .ban:hover {
-    background-color: #d32f2f; /* Darker red on hover */
+    background-color: #d32f2f;
 }
 
-/* Add spacing between buttons */
 #usersTable td button {
     margin-right: 10px;
 }
 
-/* Karma value styling */
 .karma-value {
     font-weight: bold;
-    text-shadow: 1px 2px 1px rgba(0, 0, 0, 0.1); /* Add an outline effect */
-    transition: transform 0.2s ease, color 0.2s ease; /* Smooth transition for color and animation */
+    text-shadow: 1px 2px 1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, color 0.2s ease;
 }
 
-/* Pop animation for karma changes */
 @keyframes pop {
     0% {
         transform: scale(1) translateX(0);
@@ -216,7 +206,6 @@ header a:hover {
     animation: pop 0.3s ease-in-out;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .container {
         width: 95%;

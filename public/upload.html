@@ -33,12 +33,15 @@
         </script>
     </header>
     <div class="container">
-        <h1>Create a Swap Offer</h1>
+        <h1 style="white-space: nowrap;">New Swap Offer</h1>
+        <hr>
+        <br>
         <form id="offerForm" enctype="multipart/form-data">
             <div id="dropArea" class="drop-area">
                 <p>Drop images here</p>
                 <input type="file" id="image" accept="image/*" multiple hidden>
             </div>
+            <br>
             <input type="text" autocomplete="off" id="title" placeholder="Title" required>
             <input type="text" autocomplete="off" id="description" placeholder="Description" required>
             <div id="imagePreview" class="preview"></div>

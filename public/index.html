@@ -19,12 +19,11 @@
         
         <script>
             function getKarmaColor(karma) {
-                if (karma >= 3000) return "rgb(3, 192, 255)"; // Max positive karma
-                if (karma <= -3000) return "darkred"; // Max negative karma
+                if (karma >= 3000) return "rgb(3, 192, 255)";
+                if (karma <= -3000) return "darkred";
 
                 const interpolateColor = (start, end, factor) => {
-                    // Apply an easing function to the factor for smoother transitions
-                    const easedFactor = factor * factor * (3 - 2 * factor); // Smoothstep easing
+                    const easedFactor = factor * factor * (3 - 2 * factor);
 
                     const startRGB = start.match(/\d+/g).map(Number);
                     const endRGB = end.match(/\d+/g).map(Number);
@@ -35,20 +34,16 @@
                 };
 
                 if (karma >= 1000) {
-                    // Green to Light Blue
-                    const factor = (karma - 1000) / 2000; // Normalize between 1000 and 3000
+                    const factor = (karma - 1000) / 2000;
                     return interpolateColor("rgb(0,175,0)", "rgb(3,197,250)", factor); // Green to Light Blue
                 } else if (karma >= 0) {
-                    // Orange to Green
-                    const factor = karma / 1000; // Normalize between 0 and 1000
+                    const factor = karma / 1000;
                     return interpolateColor("rgb(255,165,0)", "rgb(0,175,0)", factor); // Orange to Green
                 } else if (karma >= -1000) {
-                    // Orange to Red
-                    const factor = -karma / 1000; // Normalize between 0 and -1000
+                    const factor = -karma / 1000;
                     return interpolateColor("rgb(255,165,0)", "rgb(255,0,0)", factor); // Orange to Red
                 } else {
-                    // Red to Dark Red
-                    const factor = (-karma - 1000) / 2000; // Normalize between -1000 and -3000
+                    const factor = (-karma - 1000) / 2000;
                     return interpolateColor("rgb(255,0,0)", "rgb(63,7,7)", factor); // Red to Dark Red
                 }
             }
@@ -67,7 +62,6 @@
                         document.querySelector(".navigation").prepend(adminLink);
                     }
 
-                    // Determine karma color using the gradient function
                     const karmaColor = getKarmaColor(data.karma);
 
                     authButton.outerHTML = `
@@ -107,6 +101,12 @@
         </script>
     </header>
     <h1></h1>
+    <div class="search-bar-container">
+        <input type="text" class="search-bar" placeholder="Search for offers...">
+        <button class="filter-button">
+            <span class="icon-filter"></span>
+        </button>
+    </div>
     <div id="offers"></div>
 
     <script src="script.js"></script>

@@ -1,13 +1,12 @@
-let currentUserId = null; // Store the logged-in user's ID
-let isAdmin = false; // Store whether the user is an admin
+let currentUserId = null;
+let isAdmin = false;
 
-// Fetch the current user's session
 fetch("/api/session")
     .then((res) => res.json())
     .then((data) => {
         if (data.loggedIn) {
-            currentUserId = data.username; // Use the username as the identifier
-            isAdmin = data.isAdmin; // Check if the user is an admin
+            currentUserId = data.username;
+            isAdmin = data.isAdmin;
         }
     });
 
@@ -16,12 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const offersDiv = document.getElementById("offers");
 
     function getKarmaColor(karma) {
-        if (karma >= 3000) return "rgb(3, 192, 255)"; // Max positive karma
-        if (karma <= -3000) return "darkred"; // Max negative karma
+        if (karma >= 3000) return "rgb(3, 192, 255)";
+        if (karma <= -3000) return "darkred";
 
         function interpolateColor(start, end, factor) {
-            // Apply an easing function to the factor for smoother transitions
-            const easedFactor = factor * factor * (3 - 2 * factor); // Smoothstep easing
+            const easedFactor = factor * factor * (3 - 2 * factor);
         
             const startRGB = start.match(/\d+/g).map(Number);
             const endRGB = end.match(/\d+/g).map(Number);
@@ -32,20 +30,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (karma >= 1000) {
-            // Green to Light Blue
-            const factor = (karma - 1000) / 2000; // Normalize between 1000 and 3000
+            const factor = (karma - 1000) / 2000;
             return interpolateColor("rgb(0,175,0)", "rgb(0, 167, 223)", factor); // Green to Light Blue
         } else if (karma >= 0) {
-            // Orange to Green
-            const factor = karma / 1000; // Normalize between 0 and 1000
+            const factor = karma / 1000;
             return interpolateColor("rgb(255,165,0)", "rgb(0,175,0)", factor); // Orange to Green
         } else if (karma >= -1000) {
-            // Orange to Red
-            const factor = -karma / 1000; // Normalize between 0 and -1000
+            const factor = -karma / 1000;
             return interpolateColor("rgb(255,165,0)", "rgb(255,0,0)", factor); // Orange to Red
         } else {
-            // Red to Dark Red
-            const factor = (-karma - 1000) / 2000; // Normalize between -1000 and -3000
+            const factor = (-karma - 1000) / 2000; 
             return interpolateColor("rgb(255,0,0)", "hsl(0, 80.00%, 13.70%)", factor); // Red to Dark Red
         }
     }
@@ -59,10 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     const div = document.createElement("div");
                     div.classList.add("offer");
 
-                    // Only display the first image as the thumbnail
+        
                     const thumbnail = offer.image.split(",")[0];
 
-                    // Determine karma color using the gradient function
                     const karmaColor = getKarmaColor(offer.karma);
 
                     div.innerHTML = `
@@ -73,7 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>
                     `;
 
-                    // Attach the click event listener to the entire card
                     div.addEventListener("click", () => {
                         openModal(offer);
                     });
@@ -83,12 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     }
 
-    // Function to open the modal and display all images
     function openModal(offer) {
         const modal = document.createElement("div");
         modal.classList.add("modal");
 
-        // Determine karma color using the gradient function
         const karmaColor = getKarmaColor(offer.karma);
 
         modal.innerHTML = `
@@ -119,7 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.body.appendChild(modal);
 
-        // Apply zoom effect to modal images
         applyZoomEffectToModalImages();
 
         if (offer.isOwner || isAdmin) {
@@ -149,17 +138,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         imageElement.addEventListener("mousemove", (e) => {
             const rect = imageElement.getBoundingClientRect();
-            const x = e.clientX - rect.left; // X position within the image
-            const y = e.clientY - rect.top; // Y position within the image
-
-            const xPercent = (x / rect.width) * 100; // X percentage
-            const yPercent = (y / rect.height) * 100; // Y percentage
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const xPercent = (x / rect.width) * 100;
+            const yPercent = (y / rect.height) * 100;
 
             zoomPreview.style.display = "block";
             zoomPreview.style.backgroundImage = `url(${imageElement.src})`;
             zoomPreview.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
-            zoomPreview.style.top = `${e.clientY - rect.top - 75}px`; // Center the preview vertically
-            zoomPreview.style.left = `${e.clientX - rect.left + 50}px`; // Offset the preview further to the right
+            zoomPreview.style.top = `${e.clientY - rect.top - 75}px`;
+            zoomPreview.style.left = `${e.clientX - rect.left + 50}px`;
         });
 
         imageElement.addEventListener("mouseleave", () => {
@@ -167,7 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Apply the zoom effect to all images in the modal
     function applyZoomEffectToModalImages() {
         const modalImages = document.querySelectorAll(".modal-images img");
         modalImages.forEach((image) => enableImageZoom(image));

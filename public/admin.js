@@ -20,7 +20,7 @@ function fetchUsers() {
 
             users.forEach((user) => {
                 const row = document.createElement("tr");
-                row.setAttribute("data-id", user.id); // Add data-id for easy targeting
+                row.setAttribute("data-id", user.id);
 
                 row.innerHTML = `
                     <td>${user.username}</td>
@@ -62,20 +62,18 @@ function updateKarma(userId, amount) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount }),
     })
-        .then(() => fetch("/api/users")) // Fetch updated user data
+        .then(() => fetch("/api/users"))
         .then((res) => res.json())
         .then((users) => {
-            const user = users.find((u) => u.id == userId); // Find the updated user
+            const user = users.find((u) => u.id == userId);
             const row = document.querySelector(`[data-id="${userId}"]`).closest("tr");
             const karmaCell = row.querySelector(".karma-value");
 
-            // Update the karma value and color
             karmaCell.textContent = user.karma;
             karmaCell.style.color = getKarmaColor(user.karma);
 
-            // Add the pop animation
             karmaCell.classList.add("pop-animation");
-            setTimeout(() => karmaCell.classList.remove("pop-animation"), 300); // Remove animation after 300ms
+            setTimeout(() => karmaCell.classList.remove("pop-animation"), 300);
         })
         .catch((error) => {
             console.error("Failed to update karma:", error);
@@ -87,12 +85,11 @@ function banUser(userId) {
 }
 
 function getKarmaColor(karma) {
-    if (karma >= 3000) return "rgb(3, 192, 255)"; // Max positive karma
-    if (karma <= -3000) return "darkred"; // Max negative karma
+    if (karma >= 3000) return "rgb(3, 192, 255)";
+    if (karma <= -3000) return "darkred";
 
     const interpolateColor = (start, end, factor) => {
-        // Apply an easing function to the factor for smoother transitions
-        const easedFactor = factor * factor * (3 - 2 * factor); // Smoothstep easing
+        const easedFactor = factor * factor * (3 - 2 * factor);
 
         const startRGB = start.match(/\d+/g).map(Number);
         const endRGB = end.match(/\d+/g).map(Number);
